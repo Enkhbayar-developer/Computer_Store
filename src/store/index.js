@@ -19,7 +19,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["cart", "auth", "wishlist"], // Зөвхөн эдгээр reducer-ийг persist хийнэ
+  whitelist: ["cart", "auth", "user"], // cart, auth, user reducer-ийг persist хийнэ
   blacklist: ["api"], // RTK Query cache-ийг persist хийхгүй
 };
 
