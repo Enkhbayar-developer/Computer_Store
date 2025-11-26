@@ -1,16 +1,222 @@
-# React + Vite
+# 🖥️ Computer Store - E-commerce Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Компьютер болон дагалдах хэрэгслийн онлайн худалдааны платформ
 
-Currently, two official plugins are available:
+## ✨ Онцлог
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🛍️ Хэрэглэгчийн онцлог
 
-## React Compiler
+- ✅ Бүтээгдэхүүний жагсаалт (filter, search, sort, pagination)
+- ✅ Бүтээгдэхүүний дэлгэрэнгүй хуудас
+- ✅ Сагс удирдлага (Redux Persist)
+- ✅ Wishlist систем
+- ✅ Захиалга хийх (checkout flow)
+- ✅ Онлайн төлбөр
+- ✅ Захиалгын түүх & tracking
+- ✅ Профайл удирдлага
+- ✅ Үнэлгээ & сэтгэгдэл
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🔐 Админы онцлог
 
-## Expanding the ESLint configuration
+- ✅ Dashboard with statistics
+- ✅ Бүтээгдэхүүн CRUD
+- ✅ Захиалга удирдах (status update)
+- ✅ Хэрэглэгч удирдах (role management)
+- ✅ Analytics & Reports
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Technology Stack
+
+### Frontend
+
+- **React.js** - UI framework
+- **Redux Toolkit** - State management
+- **RTK Query** - Data fetching & caching
+- **Redux Persist** - Cart & user session persistence
+- **React Router v6** - Routing
+- **Tailwind CSS** - Styling
+- **ShadCN UI** - UI components
+- **Vite** - Build tool
+
+### Backend
+
+- **Firebase Authentication** - User authentication
+- **Firebase Firestore** - NoSQL database
+- **Firebase Storage** - File storage (optional)
+- **Firebase Hosting** - Hosting
+
+## 📦 Installation
+
+### 1. Clone Repository
+
+```bash
+git clone <repository-url>
+cd computer-store
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Firebase Setup
+
+1. Firebase Console-д орж project үүсгэнэ үү: https://console.firebase.google.com
+2. Authentication идэвхжүүлнэ (Email/Password)
+3. Firestore Database үүсгэнэ
+4. Firebase configuration авна
+
+### 4. Environment Variables
+
+`.env` файл үүсгэж Firebase config оруулна:
+
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 5. Firebase Security Rules Deploy
+
+```bash
+# Firestore Rules
+firebase deploy --only firestore:rules
+
+# Storage Rules (хэрэв ашиглавал)
+firebase deploy --only storage
+```
+
+### 6. Start Development Server
+
+```bash
+npm run dev
+```
+
+## 🗂️ Project Structure
+
+```
+src/
+├── features/           # Feature-based architecture
+│   ├── auth/          # Authentication
+│   ├── products/      # Products management
+│   ├── cart/          # Shopping cart
+│   ├── checkout/      # Checkout flow
+│   ├── orders/        # Orders management
+│   ├── user/          # User profile & wishlist
+│   └── admin/         # Admin panel
+├── components/        # Shared components
+│   ├── ui/           # ShadCN UI components
+│   ├── layout/       # Layout components
+│   └── shared/       # Shared utilities
+├── store/            # Redux store
+├── services/         # Firebase services
+├── hooks/            # Custom hooks
+├── utils/            # Utilities & constants
+└── routes/           # Routing configuration
+```
+
+## 🔒 Firebase Security Rules
+
+### Firestore Rules
+
+- Users: Read (all authenticated), Write (owner or admin)
+- Products: Read (public), Write (admin only)
+- Orders: Read (owner or admin), Create (authenticated), Update (admin)
+
+### Storage Rules
+
+- Product images: Read (public), Write (admin only)
+- User avatars: Read (public), Write (owner only)
+
+## 👤 Admin Account
+
+Эхний admin бүртгэл үүсгэх:
+
+1. Ердийн хэрэглэгчээр бүртгүүлнэ
+2. Firestore Console-д орж `users` collection дотор `role` талбарыг `admin` болгоно
+
+## 🚢 Deployment
+
+### Build
+
+```bash
+npm run build
+```
+
+### Deploy to Firebase Hosting
+
+```bash
+firebase deploy --only hosting
+```
+
+## 📝 Available Scripts
+
+- `npm run dev` - Development server эхлүүлэх
+- `npm run build` - Production build хийх
+- `npm run preview` - Build-ийг preview хийх
+- `npm run lint` - ESLint шалгах
+- `npm run firebase:deploy` - Firebase deploy
+
+## 🎨 Key Features Implementation
+
+### Cart System (Redux Persist)
+
+- Нэвтрэхгүйгээр сагсанд нэмж болно
+- Refresh хийсний дараа ч хадгалагдана
+- Нэвтэрсний дараа merge хийхгүй
+- Real-time stock validation
+
+### Authentication Flow
+
+- Email/Password authentication
+- Auto-redirect after login
+- Protected routes for user pages
+- Admin-only routes
+
+### Order Tracking
+
+- 4-step tracking timeline
+- Real-time status updates
+- Order history
+- Order details
+
+## 🛠️ Development Tips
+
+### Add New Product
+
+1. Admin panel (`/admin/products`) руу орох
+2. "Шинэ бүтээгдэхүүн" дарах
+3. Мэдээлэл оруулж хадгалах
+
+### Testing Payment
+
+Төлбөрийн систем test mode-д ажиллаж байгаа тул ямар ч дугаар оруулж болно.
+
+### Common Issues
+
+- **Firebase Auth Error**: `.env` файлд зөв config байгаа эсэхийг шалгана
+- **Firestore Permission Denied**: Security rules-ийг deploy хийсэн эсэхийг шалгана
+- **Redux Persist Error**: localStorage-ийг цэвэрлэнэ
+
+## 📚 Documentation
+
+- [React Documentation](https://react.dev)
+- [Redux Toolkit](https://redux-toolkit.js.org)
+- [Firebase Documentation](https://firebase.google.com/docs)
+- [Tailwind CSS](https://tailwindcss.com)
+- [ShadCN UI](https://ui.shadcn.com)
+
+## 📄 License
+
+MIT License
+
+## 👨‍💻 Author
+
+Computer Store Team
+
+---
+
+**Happy Coding! 🚀**

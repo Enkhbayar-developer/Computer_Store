@@ -28,18 +28,31 @@ const CartPage = lazy(() => import("../features/cart/pages/CartPage"));
 // const CheckoutPage = lazy(() => import('../features/checkout/pages/CheckoutPage'));
 // const OrderSuccessPage = lazy(() => import('../features/checkout/pages/OrderSuccessPage'));
 
+// Checkout Pages
+const CheckoutPage = lazy(() =>
+  import("../features/checkout/pages/CheckoutPage")
+);
+const OrderSuccessPage = lazy(() =>
+  import("../features/checkout/pages/OrderSuccessPage")
+);
+
 // User Pages (Protected)
-// const ProfilePage = lazy(() => import('../features/user/pages/ProfilePage'));
-// const OrdersPage = lazy(() => import('../features/orders/pages/OrdersPage'));
-// const OrderDetailPage = lazy(() => import('../features/orders/pages/OrderDetailPage'));
-// const WishlistPage = lazy(() => import('../features/user/pages/WishlistPage'));
+const ProfilePage = lazy(() => import("../features/user/pages/ProfilePage"));
+const OrdersPage = lazy(() => import("../features/orders/pages/OrdersPage"));
+const OrderDetailPage = lazy(() =>
+  import("../features/orders/pages/OrderDetailPage")
+);
+const WishlistPage = lazy(() => import("../features/user/pages/WishlistPage"));
 
 // Admin Pages (Admin Only)
-// const AdminDashboard = lazy(() => import('../features/admin/pages/AdminDashboard'));
-// const AdminProducts = lazy(() => import('../features/admin/pages/AdminProducts'));
-// const AdminOrders = lazy(() => import('../features/admin/pages/AdminOrders'));
-// const AdminUsers = lazy(() => import('../features/admin/pages/AdminUsers'));
-// const AdminAnalytics = lazy(() => import('../features/admin/pages/AdminAnalytics'));
+const AdminDashboard = lazy(() =>
+  import("../features/admin/pages/AdminDashboard")
+);
+const AdminProducts = lazy(() =>
+  import("../features/admin/pages/AdminProducts")
+);
+const AdminOrders = lazy(() => import("../features/admin/pages/AdminOrders"));
+const AdminUsers = lazy(() => import("../features/admin/pages/AdminUsers"));
 
 function AppRouter() {
   return (
@@ -59,7 +72,7 @@ function AppRouter() {
           <Route path="/cart" element={<CartPage />} />
 
           {/* Protected Routes - Нэвтэрсэн хэрэглэгч шаардлагатай */}
-          {/* <Route
+          <Route
             path="/checkout"
             element={
               <ProtectedRoute>
@@ -106,10 +119,10 @@ function AppRouter() {
                 <WishlistPage />
               </ProtectedRoute>
             }
-          /> */}
+          />
 
           {/* Admin Routes - Admin эрх шаардлагатай */}
-          {/* <Route
+          <Route
             path="/admin"
             element={
               <AdminRoute>
@@ -141,14 +154,6 @@ function AppRouter() {
               </AdminRoute>
             }
           />
-          <Route
-            path="/admin/analytics"
-            element={
-              <AdminRoute>
-                <AdminAnalytics />
-              </AdminRoute>
-            }
-          /> */}
 
           {/* 404 Not Found */}
           <Route path="*" element={<NotFoundPage />} />
