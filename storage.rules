@@ -1,0 +1,44 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isValidImageFile() {
+      return request.resource.contentType.matches('image/.*');
+    }
+    
+    function isFileSizeValid() {
+      return request.resource.size < 5 * 1024 * 1024; // 5MB max
+    }
+    
+    // Product Images (Admin only)
+    match /products/{productId}/{allPaths=**} {
+      allow read: if true; // Хэн ч унших боломжтой
+      allow write: if isAdmin() && isValidImageFile() && isFileSizeValid();
+    }
+    
+    // User Avatars
+    match /avatars/{userId}/{allPaths=**} {
+      allow read: if true; // Хэн ч унших боломжтой
+      allow write: if isAuthenticated() && 
+                     request.auth.uid == userId && 
+                     isValidImageFile() && 
+                     isFileSizeValid();
+    }
+    
+    // Review Images
+    match /reviews/{reviewId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isValidImageFile() && isFileSizeValid();
+    }
+  }
+}

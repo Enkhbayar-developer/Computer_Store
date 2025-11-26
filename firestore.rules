@@ -1,0 +1,72 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Users Collection
+    match /users/{userId} {
+      // Хэн ч өөрийн profile-ийг унших боломжтой
+      allow read: if isAuthenticated();
+      
+      // Зөвхөн өөрийнхөө profile-ийг засах боломжтой
+      allow update: if isOwner(userId);
+      
+      // Шинэ хэрэглэгч бүртгүүлэх үед үүсгэх
+      allow create: if isAuthenticated();
+      
+      // Admin бүх хэрэглэгчийг удирдах
+      allow write: if isAdmin();
+    }
+    
+    // Products Collection
+    match /products/{productId} {
+      // Хэн ч бүтээгдэхүүн унших боломжтой
+      allow read: if true;
+      
+      // Зөвхөн admin бүтээгдэхүүн нэмэх, засах, устгах
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Orders Collection
+    match /orders/{orderId} {
+      // Өөрийн захиалга болон admin унших боломжтой
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      
+      // Нэвтэрсэн хэрэглэгч захиалга үүсгэх
+      allow create: if isAuthenticated() && 
+                       request.auth.uid == request.resource.data.userId;
+      
+      // Admin захиалгын статус өөрчлөх
+      allow update: if isAdmin();
+      
+      // Хэн ч устгаж болохгүй
+      allow delete: if false;
+    }
+    
+    // Reviews Collection (Ирээдүйд нэмэгдэнэ)
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+    
+    // Categories Collection
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
