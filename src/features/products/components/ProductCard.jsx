@@ -4,7 +4,6 @@ import { Button } from "../../../components/ui/button";
 import { Card, CardContent, CardFooter } from "../../../components/ui/card";
 import { useCart } from "../../../hooks/useCart";
 import { useAuth } from "../../../hooks/useAuth";
-import { cn } from "../../../lib/utils";
 
 function ProductCard({ product }) {
   const { addToCart, isInCart } = useCart();

@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, cloneElement, isValidElement } from "react";
 import { cva } from "class-variance-authority";
 import { cn } from "../../lib/utils";
 
@@ -31,16 +31,31 @@ const buttonVariants = cva(
   }
 );
 
-const Button = forwardRef(({ className, variant, size, ...props }, ref) => {
-  return (
-    <button
-      className={cn(buttonVariants({ variant, size, className }))}
-      ref={ref}
-      {...props}
-    />
-  );
-});
+const Button = forwardRef(
+  ({ className, variant, size, asChild = false, children, ...props }, ref) => {
+    const classes = cn(buttonVariants({ variant, size }), className);
+
+    if (asChild && isValidElement(children)) {
+      const childProps = {
+        ...props,
+        className: cn(classes, children.props.className),
+      };
+      // Only pass ref to DOM elements (string type). Passing refs to function components
+      // during render can trigger lint errors and unexpected behavior.
+      if (typeof children.type === "string") {
+        childProps.ref = ref;
+      }
+      return cloneElement(children, childProps);
+    }
+
+    return (
+      <button className={classes} ref={ref} {...props}>
+        {children}
+      </button>
+    );
+  }
+);
 
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export { Button };

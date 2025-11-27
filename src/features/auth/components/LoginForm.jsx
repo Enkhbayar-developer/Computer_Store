@@ -35,7 +35,7 @@ function LoginForm() {
     try {
       await login(formData.email, formData.password);
       navigate("/");
-    } catch (error) {
+    } catch {
       // Error handled in useAuth hook
     }
   };

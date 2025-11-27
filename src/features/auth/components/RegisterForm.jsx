@@ -74,7 +74,7 @@ function RegisterForm() {
     try {
       await register(formData.email, formData.password, formData.name);
       navigate("/");
-    } catch (error) {
+    } catch {
       // Error handled in useAuth hook
     }
   };

@@ -11,8 +11,6 @@ import {
   where,
   orderBy,
   limit,
-  startAfter,
-  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../services/firebase/config";
 import { COLLECTIONS } from "../../utils/constants";
@@ -77,16 +75,17 @@ export const productsAPI = apiSlice.injectEndpoints({
             ...doc.data(),
           }));
 
-          // Client-д search хийх
+          // Client-side search (safely handle missing fields)
           if (searchTerm) {
-            products = products.filter(
-              (product) =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                product.description
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase()) ||
-                product.brand.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const st = (searchTerm || "").toLowerCase();
+            products = products.filter((product) => {
+              const name = (product.name || "").toLowerCase();
+              const desc = (product.description || "").toLowerCase();
+              const brand = (product.brand || "").toLowerCase();
+              return (
+                name.includes(st) || desc.includes(st) || brand.includes(st)
+              );
+            });
           }
 
           // Pagination

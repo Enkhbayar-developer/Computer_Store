@@ -63,12 +63,13 @@ function AdminUsers() {
     }
   };
 
-  // Filter users
-  const filteredUsers = users.filter(
-    (user) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter users (safe guards for missing fields)
+  const filteredUsers = users.filter((user) => {
+    const term = (searchTerm || "").toLowerCase();
+    const name = (user.name || "").toLowerCase();
+    const email = (user.email || "").toLowerCase();
+    return name.includes(term) || email.includes(term);
+  });
 
   if (loading) {
     return <LoadingSpinner fullScreen />;

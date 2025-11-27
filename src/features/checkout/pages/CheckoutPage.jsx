@@ -46,6 +46,12 @@ function CheckoutPage() {
     return null;
   }
 
+  // Ensure user is present (if not, redirect to login)
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
+
   const handleChange = (e) => {
     setFormData({
       ...formData,

@@ -25,7 +25,6 @@ function ProductDetailPage() {
   const { isAuthenticated } = useAuth();
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
 
   if (isLoading) {
     return <LoadingSpinner fullScreen />;

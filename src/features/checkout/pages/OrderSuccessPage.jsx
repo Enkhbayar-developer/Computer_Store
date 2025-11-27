@@ -108,7 +108,10 @@ function OrderSuccessPage() {
             <h3 className="font-semibold mb-3">Захиалсан бүтээгдэхүүн</h3>
             <div className="space-y-3">
               {order.items.map((item, index) => (
-                <div key={index} className="flex gap-3">
+                <div
+                  key={item.productId || item.id || index}
+                  className="flex gap-3"
+                >
                   <img
                     src={item.image || "/placeholder.png"}
                     alt={item.name}

@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useCart } from "../../hooks/useCart";
 
 function Header() {
-  const { isAuthenticated, user, isAdmin, logout } = useAuth();
+  const { isAuthenticated, isAdmin, logout } = useAuth();
   const { count } = useCart();
 
   return (

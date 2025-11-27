@@ -66,11 +66,13 @@ function AdminOrders() {
     }
   };
 
-  // Filter orders
+  // Filter orders (safe guards for missing fields)
   const filteredOrders = orders?.filter((order) => {
+    const term = (searchTerm || "").toLowerCase();
+    const orderNumber = (order.orderNumber || "").toLowerCase();
+    const shippingName = (order.shippingInfo?.name || "").toLowerCase();
     const matchesSearch =
-      order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.shippingInfo.name.toLowerCase().includes(searchTerm.toLowerCase());
+      orderNumber.includes(term) || shippingName.includes(term);
     const matchesStatus =
       statusFilter === "all" || order.status === statusFilter;
     return matchesSearch && matchesStatus;
